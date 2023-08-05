@@ -1,9 +1,13 @@
 const mongoose = require('mongoose');
 
 const messageSchema = new mongoose.Schema({
-  senderName: {
-    type: String,
-    required: true,
+  chatRoom: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'ChatRoom',
+  },
+  sender: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
   },
   content: {
     type: String,
@@ -13,10 +17,10 @@ const messageSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  isRead: {
-    type: Boolean,
-    default: false,
-  },
+  readBy: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  }],
 });
 
 const Message = mongoose.model('Message', messageSchema);

@@ -1,16 +1,2 @@
-# Ignore node_modules directory
-node_modules/
-
-# Ignore build output
-build/
-dist/
-out/
-
-# Ignore temporary files
-*.tmp
-
-# Ignore log files
-*.log
-
-# Ignore environment-specific files (e.g., .env, .env.local)
-.env*
+node_modules
+.env

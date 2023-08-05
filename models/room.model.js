@@ -5,12 +5,10 @@ const chatRoomSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  messages: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Message',
-    }
-  ],
+  members: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User', // Assuming you have a User model as well
+  }],
 });
 
 const ChatRoom = mongoose.model('ChatRoom', chatRoomSchema);
