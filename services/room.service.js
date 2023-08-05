@@ -1,6 +1,6 @@
 const ChatRoom = require("../models/room.model");
 
-const postRoom = async (name) => {
+const postRoom = async (name, userId) => {
   const existingChatRoom = await ChatRoom.findOne({ name });
   if (existingChatRoom) {
     return res
@@ -9,6 +9,7 @@ const postRoom = async (name) => {
   }
 
   const newChatRoom = new ChatRoom({ name });
+  if(userId) newChatRoom.members.push(userId);
   await newChatRoom.save();
   return newChatRoom;
 };
@@ -23,8 +24,14 @@ const getRoomById = async (id) => {
   return room;
 }
 
+const joinChatRoom = async (chatRoomId, userId) => {
+  return await ChatRoom.findByIdAndUpdate(chatRoomId, {$addToSet: {members: userId}});
+  
+}
+
 module.exports = {
   postRoom,
   getAllRooms,
-  getRoomById
+  getRoomById,
+  joinChatRoom
 };

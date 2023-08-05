@@ -40,6 +40,9 @@ app.use(cors());
 const roomRoutes = require("./routes/room.routes");
 app.use("/rooms", roomRoutes);
 
+const userRoutes = require("./routes/user.routes");
+app.use("/users", userRoutes);
+
 // port
 const port = process.env.PORT || 8080;
 
@@ -47,8 +50,9 @@ const port = process.env.PORT || 8080;
 io.on("connection", (socket) => {
   console.log("A user connected");
 
-  socket.on("joinRoom", (data) => {
-    // Handle user joining a chat room
+  socket.on("joinRoom", (room) => {
+    socket.join(room);
+    console.log(`User joined room: ${room}`);
   });
 
   socket.on("sendMessage", (data) => {
