@@ -28,8 +28,8 @@ const getMessagesByRoomId = catchAsync(async (req, res) => {
 });
 
 const markAsRead = catchAsync(async (req, res) => {
-  const { id } = req.params;
-  const message = await messageService.putMessage(id, req.body.userId);
+  const {chatRoomId, userId} = req.body;
+  const message = await messageService.putMessage(chatRoomId, userId);
   res.json(message);
 });
 

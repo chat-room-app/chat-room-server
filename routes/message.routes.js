@@ -11,6 +11,6 @@ const router = express.Router();
 // api routes
 router.post("/", sendMessage);
 router.get("/:chatRoomId", getMessagesByRoomId);
-router.put("/:id", markAsRead);
+router.put("/", markAsRead);
 
 module.exports = router;

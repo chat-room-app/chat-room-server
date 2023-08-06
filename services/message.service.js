@@ -24,13 +24,13 @@ const getMessagesOfRoom = async (chatRoomId) => {
   return messages;
 };
 
-const putMessage = async (id, userId) => {
-  const message = await Message.findByIdAndUpdate(
-    id,
-    { $addToSet: { readBy: userId } },
-    { new: true }
-  );
-  return message;
+const putMessage = async (chatRoomId, userId) => {
+  console.log(chatRoomId, userId)
+  const messages = await Message.updateMany(
+    {chatRoom: chatRoomId, readBy: {$ne: userId}},
+    {$push: {readBy: userId}}
+  )
+  return messages;
 };
 
 module.exports = {
