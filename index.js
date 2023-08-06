@@ -21,6 +21,11 @@ const io = new Server(server, {
   },
 });
 
+app.use((req, res, next) => {
+	req.io = io;
+	next();
+})
+
 // db
 mongoose
   .connect(process.env.MONGO_URI, {
@@ -43,12 +48,15 @@ app.use("/rooms", roomRoutes);
 const userRoutes = require("./routes/user.routes");
 app.use("/users", userRoutes);
 
+const messageRoutes = require("./routes/message.routes");
+app.use("/messages", messageRoutes);
+
 // port
 const port = process.env.PORT || 8080;
 
 // Socket.io setup
 io.on("connection", (socket) => {
-  console.log("A user connected");
+  console.log("A user connected" + socket.id);
 
   socket.on("joinRoom", (room) => {
     socket.join(room);
@@ -56,7 +64,8 @@ io.on("connection", (socket) => {
   });
 
   socket.on("sendMessage", (data) => {
-    // Handle incoming messages and broadcast to the chat room
+	console.log(data);
+	io.sockets.emit('broadcast', data);
   });
 
   socket.on("disconnect", () => {
@@ -68,3 +77,6 @@ io.on("connection", (socket) => {
 server.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
+
+
+module.exports = io;

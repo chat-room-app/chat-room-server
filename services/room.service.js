@@ -9,7 +9,7 @@ const postRoom = async (name, userId) => {
   }
 
   const newChatRoom = new ChatRoom({ name });
-  if(userId) newChatRoom.members.push(userId);
+  if (userId) newChatRoom.members.push(userId);
   await newChatRoom.save();
   return newChatRoom;
 };
@@ -17,21 +17,30 @@ const postRoom = async (name, userId) => {
 const getAllRooms = async () => {
   const rooms = await ChatRoom.find({});
   return rooms;
-}
+};
 
 const getRoomById = async (id) => {
   const room = await ChatRoom.findById(id);
   return room;
-}
+};
 
 const joinChatRoom = async (chatRoomId, userId) => {
-  return await ChatRoom.findByIdAndUpdate(chatRoomId, {$addToSet: {members: userId}});
-  
-}
+  return await ChatRoom.findByIdAndUpdate(chatRoomId, {
+    $addToSet: { members: userId },
+  });
+};
+
+const getAllRoomsByUserId = async (userId) => {
+  console.log(userId);
+  const chatRooms = await ChatRoom.find({ members: { $in: [userId] } }).populate('members', 'username').populate('messages');;
+  return chatRooms;
+ 
+};
 
 module.exports = {
   postRoom,
   getAllRooms,
   getRoomById,
-  joinChatRoom
+  joinChatRoom,
+  getAllRoomsByUserId,
 };

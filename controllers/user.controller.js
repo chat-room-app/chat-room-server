@@ -1,4 +1,3 @@
-const { postRoom } = require('../services/room.service');
 const { roomService, userService } = require('../services');
 const catchAsync = require('../utils/catchAsync');
 const ApiError = require('../utils/ApiError');

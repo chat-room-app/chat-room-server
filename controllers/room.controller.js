@@ -37,10 +37,17 @@ const joinChatRoom = catchAsync(async (req, res) => {
   return res.status(201).json(data);
 });
 
+const getRoomsByUserId = catchAsync(async(req, res) => {
+    const {userId} = req.params;
+    const rooms = await roomService.getAllRoomsByUserId(userId);
+    res.status(200).json(rooms);
+})
+
 module.exports = {
   getTest,
   addRoom,
   getRooms,
   getRoomById,
   joinChatRoom,
+  getRoomsByUserId
 };
