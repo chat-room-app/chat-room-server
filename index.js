@@ -22,16 +22,20 @@ const io = new Server(server, {
 });
 
 app.use((req, res, next) => {
-	req.io = io;
-	next();
-})
+  req.io = io;
+  next();
+});
 
 // db
 mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(
+    process.env.MONGO_URI ||
+      "mongodb+srv://varun:varun8468@cluster0.kb5vyjy.mongodb.net/",
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
+  )
   .then(() => console.log("DB CONNECTED"))
   .catch((err) => console.log("DB CONNECTION ERROR", err));
 
@@ -63,9 +67,14 @@ io.on("connection", (socket) => {
     console.log(`User joined room: ${room}`);
   });
 
+  socket.on("roomAdded", (data) => {
+    console.log("room added");
+    io.sockets.emit("refreshAfterRoomAdd");
+  });
+
   socket.on("sendMessage", (data) => {
-	console.log(data);
-	io.sockets.emit('broadcast', data);
+    console.log(data);
+    io.sockets.emit("broadcast", data);
   });
 
   socket.on("disconnect", () => {
@@ -77,6 +86,5 @@ io.on("connection", (socket) => {
 server.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
-
 
 module.exports = io;
