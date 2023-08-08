@@ -4,8 +4,7 @@ const router = express.Router();
 
 router.post("/", addUser);
 router.get("/", (req, res) => {
-    return "Hello"
-})
-
+  return "Hello";
+});
 
 module.exports = router;
